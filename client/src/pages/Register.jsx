@@ -11,11 +11,11 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-    const success = await register(formData);
-    if (success) {
+    const result = await register(formData);
+    if (result === true || result?.success) {
       navigate('/login');
     } else {
-      setError('Registration failed. Try again.');
+      setError(result?.message || 'Registration failed. Try again.');
     }
   };
 

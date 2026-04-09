@@ -21,10 +21,10 @@ export const useAuthStore = create((set) => ({
   register: async (data) => {
     try {
       await api.post('/auth/register', data);
-      return true;
+      return { success: true };
     } catch (error) {
       console.error('Register error', error);
-      return false;
+      return { success: false, message: error.response?.data?.message || 'Registration failed. Try again.' };
     }
   },
 
