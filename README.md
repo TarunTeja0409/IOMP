@@ -10,7 +10,7 @@
 
 ## 🚀 Live Application
 
-> **[Insert Live App Link Here]**
+> **https://smartskillgapanalyzer.web.app**
 
 *(Note: Replace the placeholder link above with the actual deployed URL of your application)*
 
