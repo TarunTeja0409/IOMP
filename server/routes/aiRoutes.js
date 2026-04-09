@@ -6,9 +6,13 @@ const { GoogleGenAI } = require('@google/genai');
 
 let ai;
 try {
-  ai = new GoogleGenAI({});
+  if (process.env.GEMINI_API_KEY) {
+    ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+  } else {
+    console.warn("GEMINI_API_KEY is missing in environment variables.");
+  }
 } catch (e) {
-  console.warn("Gemini AI SDK failed to initialize (Key missing).");
+  console.error("Gemini AI SDK failed to initialize:", e.message);
 }
 
 router.post('/ai-gap', verifyToken, async (req, res) => {
@@ -67,7 +71,7 @@ router.post('/ai-gap', verifyToken, async (req, res) => {
     `;
 
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: 'gemini-2.5-flash-lite',
       contents: prompt,
     });
 
@@ -85,7 +89,7 @@ router.post('/ai-gap', verifyToken, async (req, res) => {
     res.json(parsedData);
 
   } catch (error) {
-    if (error.message && error.message.includes('429')) {
+    if (error.message && (error.message.includes('429') || error.message.includes('503') || error.message.includes('UNAVAILABLE'))) {
        console.warn('Gemini AI Rate Limit Hit! Sending mocked fallback.');
        return res.json({
          matchScore: 65,

@@ -46,7 +46,7 @@ router.post('/gap', verifyToken, async (req, res) => {
             const { GoogleGenAI } = require('@google/genai');
             const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
             const prompt = `Return a raw JSON array of 5 exact string names of the core technical skills required for the role "${queryRole}". Example: ["skill1", "skill2"]. Do not wrap in markdown or backticks, just the array brackets.`;
-            const response = await ai.models.generateContent({ model: 'gemini-2.5-flash', contents: prompt });
+            const response = await ai.models.generateContent({ model: 'gemini-2.5-flash-lite', contents: prompt });
             const cleanResp = response.text.replace(/```json/g, '').replace(/```/g, '').trim();
             aiGeneratedSkills = JSON.parse(cleanResp);
           } catch (aiErr) {
